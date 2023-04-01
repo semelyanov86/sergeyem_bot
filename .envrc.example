@@ -1,1 +1,2 @@
 export BOT_DB_DSN=newroot:password@/chatbot?parseTime=true
+export BOT_TEST_DB=newroot:password@/chatbottest?parseTime=true
