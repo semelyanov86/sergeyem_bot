@@ -1,0 +1,1 @@
+export BOT_DB_DSN=newroot:password@/chatbot?parseTime=true

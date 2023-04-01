@@ -1,0 +1,13 @@
+port: 4043
+env: "development"
+appName: "SergeyemBot"
+linksUrl: "https://links.sergeyem.ru"
+linksPerPage: 10
+db:
+  host: ""
+  login: "newroot"
+  password: "1qaz2wsx"
+  dbname: "chatbot"
+  maxOpenConns: 25
+  maxIdleConns: 25
+  maxIdleTime: "15m"
