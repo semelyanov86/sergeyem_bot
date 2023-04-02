@@ -12,6 +12,14 @@ type Processor interface {
 	Process(e Event[TelegramMeta]) error
 }
 
+type Client interface {
+	Updates(offset int, limit int) ([]tgbotapi.Update, error)
+	SendMessage(chatID int64, text string) error
+	Send(msg tgbotapi.MessageConfig) error
+	CreateNewMessage(chatID int64, text string) tgbotapi.MessageConfig
+	GetMessage() string
+}
+
 type Type int
 
 const (

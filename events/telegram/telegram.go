@@ -1,7 +1,6 @@
 package telegram
 
 import (
-	"bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/settings"
@@ -10,7 +9,7 @@ import (
 )
 
 type Processor struct {
-	Tg              *telegram.Client
+	Tg              events.Client
 	offset          int
 	SettingsService settings.ServiceInterface
 	config          settings.Config
@@ -19,7 +18,7 @@ type Processor struct {
 var ErrUnknownEventType = errors.New("unknown event type")
 var ErrUnknownMetaType = errors.New("unknown meta type")
 
-func New(client *telegram.Client, config settings.Config) *Processor {
+func New(client events.Client, config settings.Config) *Processor {
 	return &Processor{
 		Tg:     client,
 		offset: 0,

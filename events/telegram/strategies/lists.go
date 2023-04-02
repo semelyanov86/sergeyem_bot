@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
@@ -18,11 +17,11 @@ const MsgLists = "Доступные списки:\n"
 type ListsHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewListsHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) ListsHandler {
+func NewListsHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) ListsHandler {
 	return ListsHandler{
 		meta:            meta,
 		settingsService: settingsService,
@@ -60,7 +59,7 @@ func (h ListsHandler) Handle(msg string, setting *settings.Setting) error {
 			return e.Wrap("error while asking for linkace token", err)
 		}
 	}
-	if len(allLists) < 0 {
+	if len(allLists) < 1 {
 		text = MsgNoList
 	}
 	if err != nil {
@@ -79,12 +78,11 @@ func (h ListsHandler) Handle(msg string, setting *settings.Setting) error {
 }
 
 func GenerateListsButtons(lists []links.List, passIds bool) [][]tgbotapi.KeyboardButton {
-	rows := tgbotapi.NewKeyboardButtonRow()
 	row := make([]tgbotapi.KeyboardButton, 0)
 	allRows := make([][]tgbotapi.KeyboardButton, 0)
 	for i, list := range lists {
 		if i > 0 && i%3 == 0 {
-			rows = tgbotapi.NewKeyboardButtonRow(row...)
+			rows := tgbotapi.NewKeyboardButtonRow(row...)
 			allRows = append(allRows, rows)
 			row = make([]tgbotapi.KeyboardButton, 0)
 		}
@@ -95,7 +93,7 @@ func GenerateListsButtons(lists []links.List, passIds bool) [][]tgbotapi.Keyboar
 		row = append(row, tgbotapi.NewKeyboardButton(title))
 	}
 	if len(row) > 0 {
-		rows = tgbotapi.NewKeyboardButtonRow(row...)
+		rows := tgbotapi.NewKeyboardButtonRow(row...)
 		allRows = append(allRows, rows)
 	}
 	return allRows

@@ -16,6 +16,13 @@ type CommandHandlerInterface interface {
 func (p *Processor) doCmd(text string, meta events.TelegramMeta) error {
 	username := meta.Username
 	setting, err := p.getSettingsModel(username)
+	if setting == nil {
+		setting = &settings.Setting{
+			Username: username,
+			ChatId:   meta.ChatID,
+		}
+	}
+
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/settings"
@@ -15,10 +14,10 @@ const MsgCancel = `Последняя команда отменена 👌`
 type CancelHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 }
 
-func NewCancelHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client) CancelHandler {
+func NewCancelHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client) CancelHandler {
 	return CancelHandler{
 		meta:            meta,
 		settingsService: settingsService,
@@ -42,6 +41,6 @@ func (h CancelHandler) Handle(text string, setting *settings.Setting) error {
 	if err != nil {
 		return e.Wrap(ContextClearFailed, err)
 	}
-	tgbotapi.NewRemoveKeyboard(true)
+	_ = tgbotapi.NewRemoveKeyboard(true)
 	return h.tg.SendMessage(setting.ChatId, MsgCancel)
 }

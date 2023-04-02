@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
@@ -15,11 +14,11 @@ const MsgSaveLink = "Пожалуйста, выберите список, к к�
 type LinkSaveHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewLinkSaveHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) LinkSaveHandler {
+func NewLinkSaveHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) LinkSaveHandler {
 	return LinkSaveHandler{
 		meta:            meta,
 		settingsService: settingsService,

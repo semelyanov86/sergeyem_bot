@@ -24,6 +24,16 @@ Telegram bot accepts following commands:
 * `/listlinks` - Showing links from specific list. It also accepts per page argument. After entering this command, bot will ask you to select specific list.
 * To save link in LinkAce, just enter full URL. Then bot will ask you to select a List.
 
+
+## Running Tests
+
+To run tests and code audit processes, run the following command. To enable test database, you need to add env vatiable `BOT_TEST_DB` with dsn db of test database.
+
+```bash
+  make audit
+```
+
+
 ## Feedback
 If you have any feedback, please reach out to us at se@sergeyem.ru
 

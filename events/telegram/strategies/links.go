@@ -1,14 +1,12 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
 	"bot/settings"
 	"errors"
 	"strconv"
-	"strings"
 )
 
 const LinksCmd = "links"
@@ -20,11 +18,11 @@ const AskForLinksToken = "Мы не нашли токен LinkAce или он н
 type LinksHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewLinksHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) LinksHandler {
+func NewLinksHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) LinksHandler {
 	return LinksHandler{
 		meta:            meta,
 		settingsService: settingsService,
@@ -67,7 +65,7 @@ func (h LinksHandler) Handle(msg string, setting *settings.Setting) error {
 			return e.Wrap("error while asking for linkace token", err)
 		}
 	}
-	if len(latestLinks) < 0 {
+	if len(latestLinks) < 1 {
 		text = "Не найдено каких-либо ссылок 🤔"
 	}
 	if err != nil {
@@ -94,24 +92,4 @@ func (h LinksHandler) askLinksToken(setting *settings.Setting) error {
 		return e.Wrap("error while sending response with links", err)
 	}
 	return nil
-}
-
-func (h LinksHandler) getTagsList(link links.Link) string {
-	result := ""
-	for _, tag := range link.Tags {
-		result = result + tag.Name + ", "
-	}
-	result = strings.TrimSpace(result)
-	result = strings.Trim(result, ",")
-	return result
-}
-
-func (h LinksHandler) getListsString(link links.Link) string {
-	result := ""
-	for _, list := range link.Lists {
-		result = result + list.Name + ", "
-	}
-	result = strings.TrimSpace(result)
-	result = strings.Trim(result, ",")
-	return result
 }

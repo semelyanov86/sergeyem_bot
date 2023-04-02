@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/settings"
 )
@@ -26,10 +25,10 @@ const MsgHelp = `Этот бот может взаимодействовать �
 type HelpHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 }
 
-func NewHelpHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client) HelpHandler {
+func NewHelpHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client) HelpHandler {
 	return HelpHandler{
 		meta:            meta,
 		settingsService: settingsService,

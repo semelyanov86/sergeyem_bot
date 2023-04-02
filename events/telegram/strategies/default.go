@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/settings"
 )
@@ -11,10 +10,10 @@ const MsgDefault = "Мне не удалось распознать вашу к�
 type DefaultHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 }
 
-func NewDefaultHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client) DefaultHandler {
+func NewDefaultHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client) DefaultHandler {
 	return DefaultHandler{
 		meta:            meta,
 		settingsService: settingsService,

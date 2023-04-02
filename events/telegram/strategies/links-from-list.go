@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
@@ -16,11 +15,11 @@ const MsgLinksFromList = "Последние ссылки из списка 👉
 type LinksFromListHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewLinksFromListHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) LinksFromListHandler {
+func NewLinksFromListHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) LinksFromListHandler {
 	return LinksFromListHandler{
 		meta:            meta,
 		settingsService: settingsService,
@@ -80,7 +79,7 @@ func (h LinksFromListHandler) Handle(msg string, setting *settings.Setting) erro
 	}
 
 	var text = "<i>" + MsgLinksFromList + msgAttributes[0] + "</i>"
-	if len(latestLinks) < 0 {
+	if len(latestLinks) < 1 {
 		text = "Не найдено каких-либо ссылок 🤔 " + msgAttributes[0]
 	}
 	text = text + "\n"

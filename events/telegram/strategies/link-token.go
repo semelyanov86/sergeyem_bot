@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
@@ -14,11 +13,11 @@ const MsgErrorLinkToken = "Невозможно сохранить токен. �
 type LinkTokenHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewLinkTokenHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) LinkTokenHandler {
+func NewLinkTokenHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) LinkTokenHandler {
 	return LinkTokenHandler{
 		meta:            meta,
 		settingsService: settingsService,

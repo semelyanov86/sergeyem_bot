@@ -31,6 +31,10 @@ func newBasePath(token string) string {
 	return "bot" + token
 }
 
+func (c *Client) GetMessage() string {
+	return ""
+}
+
 func (c *Client) Updates(offset int, limit int) ([]tgbotapi.Update, error) {
 	// Create a new UpdateConfig struct with an offset of 0. Offsets are used
 	// to make sure Telegram knows we've handled previous values and we don't
@@ -70,6 +74,41 @@ func (c *Client) Send(msg tgbotapi.MessageConfig) error {
 }
 
 func (c *Client) CreateNewMessage(chatID int64, text string) tgbotapi.MessageConfig {
+	msgConfig := tgbotapi.NewMessage(chatID, text)
+
+	msgConfig.ParseMode = tgbotapi.ModeHTML
+
+	return msgConfig
+}
+
+type TestClient struct {
+	Message string
+}
+
+func NewTestClient() *TestClient {
+	return &TestClient{Message: ""}
+}
+
+func (c TestClient) GetMessage() string {
+	return c.Message
+}
+
+func (c *TestClient) Updates(offset int, limit int) ([]tgbotapi.Update, error) {
+	return nil, nil
+}
+
+func (c *TestClient) SendMessage(chatID int64, text string) error {
+	c.Message = text
+
+	return nil
+}
+
+func (c *TestClient) Send(msg tgbotapi.MessageConfig) error {
+	c.Message = msg.Text
+	return nil
+}
+
+func (c *TestClient) CreateNewMessage(chatID int64, text string) tgbotapi.MessageConfig {
 	msgConfig := tgbotapi.NewMessage(chatID, text)
 
 	msgConfig.ParseMode = tgbotapi.ModeHTML

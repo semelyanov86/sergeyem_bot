@@ -1,7 +1,6 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
@@ -17,11 +16,11 @@ const LinkSaveError = "Нельзя сохранить ссылку. Произ�
 type LinkStoreHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewLinkStoreHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) LinkStoreHandler {
+func NewLinkStoreHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) LinkStoreHandler {
 	return LinkStoreHandler{
 		meta:            meta,
 		settingsService: settingsService,

@@ -1,12 +1,12 @@
 package strategies
 
 import (
-	telegram2 "bot/clients/telegram"
 	"bot/events"
 	"bot/lib/e"
 	"bot/links"
 	"bot/settings"
 	"errors"
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strconv"
 )
@@ -20,11 +20,11 @@ const MsgNoList = "Нет списков. Пожалуйста, создайте
 type ListLinksHandler struct {
 	meta            events.TelegramMeta
 	settingsService settings.ServiceInterface
-	tg              *telegram2.Client
+	tg              events.Client
 	linkService     links.LinkService
 }
 
-func NewListLinksHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg *telegram2.Client, linkService links.LinkService) ListLinksHandler {
+func NewListLinksHandler(meta events.TelegramMeta, settingsService settings.ServiceInterface, tg events.Client, linkService links.LinkService) ListLinksHandler {
 	return ListLinksHandler{
 		meta:            meta,
 		settingsService: settingsService,
@@ -62,7 +62,7 @@ func (h ListLinksHandler) Handle(msg string, setting *settings.Setting) error {
 	if err != nil {
 		perPage = 0
 	}
-	err = h.settingsService.SetContext(setting.Username, string(perPage))
+	err = h.settingsService.SetContext(setting.Username, fmt.Sprint(perPage))
 	if err != nil {
 		h.tg.SendMessage(setting.ChatId, ContextChangeFailed)
 		return e.Wrap("failed to save context", err)
