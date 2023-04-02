@@ -12,6 +12,9 @@ import (
 	"testing"
 )
 
+const TestUserName = "TestUser"
+const TestChatId = 123
+
 func NewTestDB(t *testing.T) (*sql.DB, func()) {
 	var dbCred = os.Getenv("BOT_TEST_DB")
 	db, err := sql.Open("mysql", dbCred)
@@ -65,8 +68,8 @@ func GenerateTestMessage(text string) events.Event[events.TelegramMeta] {
 		Type: events.Message,
 		Text: text,
 		Meta: events.TelegramMeta{
-			ChatID:   123,
-			Username: "Test",
+			ChatID:   TestChatId,
+			Username: TestUserName,
 			Message: &tgbotapi.Message{
 				Text: text,
 				Entities: []tgbotapi.MessageEntity{
