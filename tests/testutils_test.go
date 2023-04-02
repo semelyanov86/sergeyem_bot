@@ -60,7 +60,9 @@ func NewTestProcessorWithDb(t *testing.T) (*telegram.Processor, func()) {
 	cfg.Db = &settings.Database{}
 	cfg.Db.Dsn = os.Getenv("BOT_TEST_DB")
 	cfg.Db.Sql = db
-	return telegram.New(testClient, cfg), teardown
+	var processor = telegram.New(testClient, cfg)
+	processor.Factory = telegram.NewTestFactoryResolver()
+	return processor, teardown
 }
 
 func GenerateTestMessage(text string) events.Event[events.TelegramMeta] {
@@ -81,4 +83,18 @@ func GenerateTestMessage(text string) events.Event[events.TelegramMeta] {
 			},
 		},
 	}
+}
+
+func GenerateTestUserWithTokens(processor *telegram.Processor) (*settings.Setting, error) {
+	setting, err := processor.SettingsService.GetOrCreateSetting(TestUserName, TestChatId)
+	if err != nil {
+		return nil, err
+	}
+	setting.LinkaceToken = "TEST_TOKEN"
+	err = processor.SettingsService.UpdateSetting(setting)
+	return setting, err
+}
+
+func GenerateTestUserWithoutTokens(processor *telegram.Processor) (*settings.Setting, error) {
+	return processor.SettingsService.GetOrCreateSetting(TestUserName, TestChatId)
 }

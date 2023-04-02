@@ -13,6 +13,7 @@ type Processor struct {
 	offset          int
 	SettingsService settings.ServiceInterface
 	config          settings.Config
+	Factory         FactoryInterface
 }
 
 var ErrUnknownEventType = errors.New("unknown event type")
@@ -28,6 +29,7 @@ func New(client events.Client, config settings.Config) *Processor {
 				DB: config.Db.Sql,
 			},
 		},
+		Factory: &FactoryResolver{Setting: &settings.Setting{}},
 	}
 }
 

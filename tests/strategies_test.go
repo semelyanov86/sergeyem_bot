@@ -46,7 +46,7 @@ func TestHelpStrategy(t *testing.T) {
 func TestCancelStrategy(t *testing.T) {
 	processor, down := NewTestProcessorWithDb(t)
 	defer down()
-	_, err := processor.SettingsService.GetOrCreateSetting(TestUserName, TestChatId)
+	_, err := GenerateTestUserWithTokens(processor)
 	if err != nil {
 		t.Fatal("there was an error during creation of setting" + err.Error())
 	}
