@@ -74,3 +74,16 @@ func TestCancelStrategy(t *testing.T) {
 		t.Errorf("expected mode to be %d, got %d", strategies.Root, setting.Mode)
 	}
 }
+
+func TestDefaultStrategy(t *testing.T) {
+	processor, down := NewTestProcessorWithDb(t)
+	defer down()
+	event := GenerateTestMessage("/some_unknown_command")
+	err := processor.Process(event)
+	if err != nil {
+		t.Fatal("There was an error during process help message" + err.Error())
+	}
+	if processor.Tg.GetMessage() != strategies.MsgDefault {
+		t.Errorf("sent messages does not match. Expected %s, got %s", strategies.MsgDefault, processor.Tg.GetMessage())
+	}
+}
