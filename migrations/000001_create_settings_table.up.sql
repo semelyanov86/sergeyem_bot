@@ -8,6 +8,7 @@ CREATE TABLE `settings`(
                            `easywords_token` VarChar( 255 ) NOT NULL,
                            `mode` TinyInt( 255 ) NOT NULL DEFAULT 0,
                            `context` Text NOT NULL,
+                           `easylist_id` BigInt( 255 ) DEFAULT 0,
                            PRIMARY KEY (id),
                            CONSTRAINT `unique_id` UNIQUE( `id` ),
                            CONSTRAINT `unique_username` UNIQUE( `username` ),

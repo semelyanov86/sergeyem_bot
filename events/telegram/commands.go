@@ -28,8 +28,9 @@ func (p *Processor) doCmd(text string, meta events.TelegramMeta) error {
 		return err
 	}
 
-	var handlers = [11]CommandHandlerInterface{
+	var handlers = [12]CommandHandlerInterface{
 		strategies.NewStartHandler(meta, p.SettingsService, p.Tg),
+		strategies.NewMyHandler(meta, p.SettingsService, p.Tg),
 		strategies.NewHelpHandler(meta, p.SettingsService, p.Tg),
 		strategies.NewCancelHandler(meta, p.SettingsService, p.Tg),
 		strategies.NewLinksHandler(meta, p.SettingsService, p.Tg, p.Factory.GetLinkService(p.config)),

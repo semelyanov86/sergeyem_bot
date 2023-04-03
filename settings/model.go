@@ -9,4 +9,5 @@ type Setting struct {
 	EasywordsToken string
 	Mode           int
 	Context        string
+	EasylistId     int64
 }

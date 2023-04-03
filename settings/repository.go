@@ -10,13 +10,13 @@ type Repository struct {
 }
 
 func (r *Repository) Get(user string) (*Setting, error) {
-	stmt := `SELECT id, username, chat_id, linkace_token, easylist_token, easywords_token, mode, context FROM settings
+	stmt := `SELECT id, username, chat_id, linkace_token, easylist_token, easywords_token, mode, context, easylist_id FROM settings
     WHERE username = ?`
 
 	row := r.DB.QueryRow(stmt, user)
 
 	s := &Setting{}
-	err := row.Scan(&s.ID, &s.Username, &s.ChatId, &s.LinkaceToken, &s.EasylistToken, &s.EasywordsToken, &s.Mode, &s.Context)
+	err := row.Scan(&s.ID, &s.Username, &s.ChatId, &s.LinkaceToken, &s.EasylistToken, &s.EasywordsToken, &s.Mode, &s.Context, &s.EasylistId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
@@ -29,10 +29,10 @@ func (r *Repository) Get(user string) (*Setting, error) {
 }
 
 func (r *Repository) Insert(setting *Setting) error {
-	stmt := `INSERT INTO settings (username, chat_id, linkace_token, easylist_token, easywords_token, mode, context)
-    VALUES(?, ?, ?, ?, ?, ?, ?)`
+	stmt := `INSERT INTO settings (username, chat_id, linkace_token, easylist_token, easywords_token, mode, context, easylist_id)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?)`
 
-	result, err := r.DB.Exec(stmt, setting.Username, setting.ChatId, setting.LinkaceToken, setting.EasylistToken, setting.EasywordsToken, setting.Mode, setting.Context)
+	result, err := r.DB.Exec(stmt, setting.Username, setting.ChatId, setting.LinkaceToken, setting.EasylistToken, setting.EasywordsToken, setting.Mode, setting.Context, setting.EasylistId)
 	if err != nil {
 		return err
 	}
@@ -48,8 +48,8 @@ func (r *Repository) Insert(setting *Setting) error {
 }
 
 func (r *Repository) Update(setting *Setting) error {
-	stmt := "UPDATE settings SET linkace_token = ?, easylist_token = ?, easywords_token = ? WHERE id = ?"
-	_, err := r.DB.Exec(stmt, setting.LinkaceToken, setting.EasylistToken, setting.EasywordsToken, setting.ID)
+	stmt := "UPDATE settings SET linkace_token = ?, easylist_token = ?, easywords_token = ?, easylist_id = ? WHERE id = ?"
+	_, err := r.DB.Exec(stmt, setting.LinkaceToken, setting.EasylistToken, setting.EasywordsToken, setting.EasylistId, setting.ID)
 	return err
 }
 
