@@ -43,5 +43,19 @@ func (l2 MockRepository) GetLinksFromList(ctx context.Context, listId int, limit
 }
 
 func (l2 MockRepository) GetAllLists(ctx context.Context) ([]List, error) {
-	return nil, nil
+	lists := []List{
+		{
+			Id:          1,
+			Name:        "PHP",
+			Description: "PHP websites",
+			IsPrivate:   false,
+		},
+		{
+			Id:          2,
+			Name:        "Golang",
+			Description: "Golang websites",
+			IsPrivate:   false,
+		},
+	}
+	return lists, nil
 }
