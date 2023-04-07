@@ -7,12 +7,15 @@ import (
 )
 
 type Config struct {
-	Port         int
-	Env          string
-	Db           *Database
-	AppName      string `yaml:"appName"`
-	LinksUrl     string `yaml:"linksUrl"`
-	LinksPerPage int    `yaml:"linksPerPage"`
+	Port          int
+	Env           string
+	Db            *Database
+	AppName       string `yaml:"appName"`
+	LinksUrl      string `yaml:"linksUrl"`
+	LinksPerPage  int    `yaml:"linksPerPage"`
+	WordsUrl      string `yaml:"wordsUrl"`
+	WordsPerPage  int    `yaml:"wordsPerPage"`
+	WordsLanguage string `yaml:"wordsLanguage"`
 }
 
 type Database struct {

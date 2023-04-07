@@ -3,6 +3,9 @@ env: "development"
 appName: "SergeyemBot"
 linksUrl: "https://links.sergeyem.ru"
 linksPerPage: 10
+wordsUrl: "https://easywordsapp.ru"
+wordsPerPage: 5
+wordsLanguage: "DE"
 db:
   host: ""
   login: "newroot"

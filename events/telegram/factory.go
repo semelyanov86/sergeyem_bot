@@ -3,11 +3,13 @@ package telegram
 import (
 	"bot/links"
 	"bot/settings"
+	"bot/words"
 )
 
 type FactoryInterface interface {
 	GetLinkService(config settings.Config) links.LinkService
 	SetSettings(settings *settings.Setting)
+	GetWordsService(config settings.Config) words.WordService
 }
 
 type FactoryResolver struct {
@@ -19,6 +21,17 @@ func (f *FactoryResolver) GetLinkService(config settings.Config) links.LinkServi
 		Repository: links.LinkRepository{
 			Url:   config.LinksUrl,
 			Token: f.Setting.LinkaceToken,
+		},
+		Settings: f.Setting,
+		Config:   config,
+	}
+}
+
+func (f *FactoryResolver) GetWordsService(config settings.Config) words.WordService {
+	return words.WordService{
+		Repository: words.WordRepository{
+			Token: f.Setting.EasywordsToken,
+			Url:   config.WordsUrl,
 		},
 		Settings: f.Setting,
 		Config:   config,
@@ -38,6 +51,16 @@ func (t *TestFactoryResolver) GetLinkService(config settings.Config) links.LinkS
 		Repository: links.MockRepository{Token: t.Setting.LinkaceToken},
 		Settings:   t.Setting,
 		Config:     config,
+	}
+}
+
+func (f *TestFactoryResolver) GetWordsService(config settings.Config) words.WordService {
+	return words.WordService{
+		Repository: words.MockRepository{
+			Token: f.Setting.EasywordsToken,
+		},
+		Settings: f.Setting,
+		Config:   config,
 	}
 }
 
