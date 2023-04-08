@@ -23,6 +23,8 @@ Telegram bot accepts following commands:
 * `/links` - Accept number of links param. For example `/links 3` showing 3 links per page. By default 10 links. If you do not enter LinkAce token, bot will ask you for it.
 * `/listlinks` - Showing links from specific list. It also accepts per page argument. After entering this command, bot will ask you to select specific list.
 * To save link in LinkAce, just enter full URL. Then bot will ask you to select a List.
+* `/random` - get list of random words for learning from EasyWords service. You can pass number of words as a param.
+* `/saveword` - save new word to easywords service.
 
 
 ## Running Tests

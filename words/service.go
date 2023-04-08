@@ -26,6 +26,18 @@ func (s WordService) GetRandomWords(perPage int) ([]Word, error) {
 	return s.Repository.GetRandomWords(ctx, perPage)
 }
 
+func (s WordService) GetSettings() (WordSettings, error) {
+	var token = s.Settings.EasywordsToken
+	var settings WordSettings
+	if token == "" {
+		return settings, ErrWordTokenNotExist
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	return s.Repository.GetSettings(ctx)
+}
+
 func (s WordService) SaveWord(word *Word) error {
 	var token = s.Settings.EasywordsToken
 	if token == "" {

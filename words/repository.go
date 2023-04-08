@@ -64,6 +64,42 @@ func (w WordRepository) GetRandomWords(ctx context.Context, perPage int) ([]Word
 	return wordResponse.Data, nil
 }
 
+func (w WordRepository) GetSettings(ctx context.Context) (WordSettings, error) {
+	var settingsResponse WordSettingsResponse
+	if w.Token == "" {
+		return WordSettings{}, ErrWordTokenNotExist
+	}
+
+	if w.Url == "" {
+		return WordSettings{}, ErrWrongWordsUrl
+	}
+
+	req, err := w.generateRequestFromUrl(ctx, w.Url+"/api/settings/", "", nil)
+	if err != nil {
+		return WordSettings{}, e.Wrap("failed to generate settings request", err)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if res.StatusCode == http.StatusUnauthorized {
+		return WordSettings{}, ErrWordTokenNotExist
+	}
+	if res.StatusCode != http.StatusOK {
+		return WordSettings{}, e.Wrap(fmt.Sprintf("Wrong status code: %d", res.StatusCode), ErrWrongWordsStatusCode)
+	}
+	if err != nil {
+		return WordSettings{}, e.Wrap("Error while getting settings", err)
+	}
+	defer res.Body.Close()
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return WordSettings{}, e.Wrap("error while reading body", err)
+	}
+	err = json.Unmarshal(body, &settingsResponse)
+	if err != nil {
+		return WordSettings{}, e.Wrap("error while parsing body", err)
+	}
+	return settingsResponse.Data, nil
+}
+
 func (w WordRepository) SaveWord(ctx context.Context, word *Word) error {
 	var errResp ErrorWordResponse
 	wordBody, err := json.Marshal(word)
@@ -106,7 +142,7 @@ func (w WordRepository) generateRequestFromUrl(ctx context.Context, url string, 
 	if method == "" {
 		method = http.MethodGet
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, body)
+	req, err := http.NewRequestWithContext(ctx, method, url, body)
 	if err != nil {
 		return nil, err
 	}

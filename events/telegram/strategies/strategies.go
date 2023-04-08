@@ -18,4 +18,7 @@ const (
 	AskList
 	AskListForLinks
 	AskWordsToken
+	AskedWordOriginal
+	AskedWordTranslation
+	AskedWordLanguage
 )

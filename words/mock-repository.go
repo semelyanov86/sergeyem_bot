@@ -30,6 +30,17 @@ func (w MockRepository) GetRandomWords(ctx context.Context, perPage int) ([]Word
 	return words, nil
 }
 
+func (w MockRepository) GetSettings(ctx context.Context) (WordSettings, error) {
+	return WordSettings{
+		Paginate:        "20",
+		DefaultLanguage: "DE",
+		ShowShared:      true,
+		ShowImported:    false,
+		LanguagesList:   []string{"DE", "EN"},
+		MainLanguage:    "RU",
+	}, nil
+}
+
 func (w MockRepository) SaveWord(ctx context.Context, word *Word) error {
 	return nil
 }
