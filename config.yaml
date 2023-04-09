@@ -6,6 +6,8 @@ linksPerPage: 10
 wordsUrl: "https://easywordsapp.ru"
 wordsPerPage: 5
 wordsLanguage: "DE"
+listsUrl: "https://easylist.sergeyem.ru"
+listsPerPage: 100
 db:
   host: ""
   login: "newroot"

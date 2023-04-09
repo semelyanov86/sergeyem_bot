@@ -18,11 +18,19 @@ func TestGettingRandomWordAskForToken(t *testing.T) {
 
 	event := GenerateTestMessage("/" + strategies.RandomCmd)
 	err = processor.Process(event)
-	if err == nil {
-		t.Error("There should be a token error, got nil")
+	if err != nil {
+		t.Error(err.Error())
 	}
 	if processor.Tg.GetMessage() != strategies.AskForWordsToken {
 		t.Errorf("result message does not match. Expected %s, got %s", strategies.AskForWordsToken, processor.Tg.GetMessage())
+	}
+
+	setting, err = processor.SettingsService.GetByUserName(TestUserName)
+	if err != nil {
+		t.Fatal("Failed to get updated settings")
+	}
+	if setting.Mode != strategies.AskWordsToken {
+		t.Errorf("expected mode to be %d, got %d", strategies.AskWordsToken, setting.Mode)
 	}
 }
 

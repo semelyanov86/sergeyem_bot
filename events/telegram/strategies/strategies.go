@@ -21,4 +21,6 @@ const (
 	AskedWordOriginal
 	AskedWordTranslation
 	AskedWordLanguage
+	AskedEasylistToken
+	AskedEasylistId
 )

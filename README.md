@@ -25,6 +25,10 @@ Telegram bot accepts following commands:
 * To save link in LinkAce, just enter full URL. Then bot will ask you to select a List.
 * `/random` - get list of random words for learning from EasyWords service. You can pass number of words as a param.
 * `/saveword` - save new word to easywords service.
+* `/my` - To get settings information about current user.
+* `/lists` - getting all lists from LinkAce.
+* `/buylists` - get all lists from Easylist service. Accept pagination as a param. By default is value in config file
+* `/items` - get all items from buy list. You have to pass list ID as a param.
 
 
 ## Running Tests

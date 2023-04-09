@@ -92,6 +92,8 @@ func GenerateTestUserWithTokens(processor *telegram.Processor) (*settings.Settin
 	}
 	setting.LinkaceToken = "TEST_TOKEN"
 	setting.EasywordsToken = "WORD_TOKEN"
+	setting.EasylistToken = "LIST_TOKEN"
+	setting.EasylistId = 1
 	err = processor.SettingsService.UpdateSetting(setting)
 	return setting, err
 }

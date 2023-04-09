@@ -16,6 +16,8 @@ type Config struct {
 	WordsUrl      string `yaml:"wordsUrl"`
 	WordsPerPage  int    `yaml:"wordsPerPage"`
 	WordsLanguage string `yaml:"wordsLanguage"`
+	ListsUrl      string `yaml:"listsUrl"`
+	ListsPerPage  int    `yaml:"listsPerPage"`
 }
 
 type Database struct {

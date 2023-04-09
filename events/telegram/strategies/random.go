@@ -64,6 +64,7 @@ func (h RandomHandler) Handle(msg string, setting *settings.Setting) error {
 		if err != nil {
 			return e.Wrap("error while asking for easywords token", err)
 		}
+		return err
 	}
 	if len(latestWords) < 1 {
 		text = "Не найдено каких-либо слов для изучения 🤔"
