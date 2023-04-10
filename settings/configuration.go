@@ -18,6 +18,7 @@ type Config struct {
 	WordsLanguage string `yaml:"wordsLanguage"`
 	ListsUrl      string `yaml:"listsUrl"`
 	ListsPerPage  int    `yaml:"listsPerPage"`
+	WebhookUrl    string `yaml:"webhookUrl"`
 }
 
 type Database struct {

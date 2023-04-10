@@ -35,6 +35,18 @@ func (c *Client) GetMessage() string {
 	return ""
 }
 
+func (c *Client) Request(chat tgbotapi.Chattable) (*tgbotapi.APIResponse, error) {
+	return c.client.Request(chat)
+}
+
+func (c *Client) GetWebhookInfo() (tgbotapi.WebhookInfo, error) {
+	return c.client.GetWebhookInfo()
+}
+
+func (c *Client) ListenWebhook(url string) tgbotapi.UpdatesChannel {
+	return c.client.ListenForWebhook(url)
+}
+
 func (c *Client) Updates(offset int, limit int) ([]tgbotapi.Update, error) {
 	// Create a new UpdateConfig struct with an offset of 0. Offsets are used
 	// to make sure Telegram knows we've handled previous values and we don't
@@ -81,6 +93,10 @@ func (c *Client) CreateNewMessage(chatID int64, text string) tgbotapi.MessageCon
 	return msgConfig
 }
 
+func (c *Client) GetToken() string {
+	return c.client.Token
+}
+
 type TestClient struct {
 	Message string
 }
@@ -91,6 +107,18 @@ func NewTestClient() *TestClient {
 
 func (c TestClient) GetMessage() string {
 	return c.Message
+}
+
+func (c *TestClient) Request(chat tgbotapi.Chattable) (*tgbotapi.APIResponse, error) {
+	return nil, nil
+}
+
+func (c *TestClient) GetWebhookInfo() (tgbotapi.WebhookInfo, error) {
+	return tgbotapi.WebhookInfo{}, nil
+}
+
+func (c *TestClient) ListenWebhook(url string) tgbotapi.UpdatesChannel {
+	return nil
 }
 
 func (c *TestClient) Updates(offset int, limit int) ([]tgbotapi.Update, error) {
@@ -106,6 +134,10 @@ func (c *TestClient) SendMessage(chatID int64, text string) error {
 func (c *TestClient) Send(msg tgbotapi.MessageConfig) error {
 	c.Message = msg.Text
 	return nil
+}
+
+func (c *TestClient) GetToken() string {
+	return ""
 }
 
 func (c *TestClient) CreateNewMessage(chatID int64, text string) tgbotapi.MessageConfig {

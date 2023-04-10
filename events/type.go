@@ -6,6 +6,7 @@ import (
 
 type Fetcher interface {
 	Fetch(limit int) ([]Event[TelegramMeta], error)
+	ListenWebhooks(webhookUrl string) ([]Event[TelegramMeta], error)
 }
 
 type Processor interface {
@@ -18,6 +19,10 @@ type Client interface {
 	Send(msg tgbotapi.MessageConfig) error
 	CreateNewMessage(chatID int64, text string) tgbotapi.MessageConfig
 	GetMessage() string
+	GetToken() string
+	Request(chat tgbotapi.Chattable) (*tgbotapi.APIResponse, error)
+	GetWebhookInfo() (tgbotapi.WebhookInfo, error)
+	ListenWebhook(url string) tgbotapi.UpdatesChannel
 }
 
 type Type int

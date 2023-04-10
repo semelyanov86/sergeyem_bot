@@ -1,4 +1,4 @@
-port: 4043
+port: 4003
 env: "development"
 appName: "SergeyemBot"
 linksUrl: "https://links.sergeyem.ru"
@@ -8,6 +8,7 @@ wordsPerPage: 5
 wordsLanguage: "DE"
 listsUrl: "https://easylist.sergeyem.ru"
 listsPerPage: 100
+webhookUrl: "https://185.135.137.48:443/"
 db:
   host: ""
   login: "newroot"

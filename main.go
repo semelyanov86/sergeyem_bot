@@ -40,9 +40,10 @@ func main() {
 
 	consumer := event_consumer.New(eventsProcessor, eventsProcessor, BatchSize)
 
-	if err := consumer.Start(); err != nil {
+	if err := consumer.Start(cfg.WebhookUrl, cfg.Port); err != nil {
 		log.Fatal("service is stopped", err)
 	}
+	log.Println("we are done")
 }
 
 func mustToken() string {

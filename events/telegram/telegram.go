@@ -6,6 +6,7 @@ import (
 	"bot/settings"
 	"errors"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"log"
 )
 
 type Processor struct {
@@ -51,6 +52,34 @@ func (p *Processor) Fetch(limit int) ([]events.Event[events.TelegramMeta], error
 
 	p.offset = updates[len(updates)-1].UpdateID + 1
 
+	return res, nil
+}
+
+func (p *Processor) ListenWebhooks(webhookUrl string) ([]events.Event[events.TelegramMeta], error) {
+	certFile := tgbotapi.FilePath("cert/cert.pem")
+	wh, _ := tgbotapi.NewWebhookWithCert(webhookUrl+"/tg/"+p.Tg.GetToken(), certFile)
+
+	_, err := p.Tg.Request(wh)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	info, err := p.Tg.GetWebhookInfo()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if info.LastErrorDate != 0 {
+		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
+	}
+
+	updates := p.Tg.ListenWebhook("/tg/" + p.Tg.GetToken())
+
+	res := make([]events.Event[events.TelegramMeta], 0, len(updates))
+
+	for u := range updates {
+		res = append(res, event(u))
+	}
 	return res, nil
 }
 
