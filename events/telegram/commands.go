@@ -28,7 +28,7 @@ func (p *Processor) doCmd(text string, meta events.TelegramMeta) error {
 		return err
 	}
 
-	var handlers = [21]CommandHandlerInterface{
+	var handlers = [22]CommandHandlerInterface{
 		strategies.NewStartHandler(meta, p.SettingsService, p.Tg),
 		strategies.NewMyHandler(meta, p.SettingsService, p.Tg),
 		strategies.NewHelpHandler(meta, p.SettingsService, p.Tg),
@@ -49,6 +49,7 @@ func (p *Processor) doCmd(text string, meta events.TelegramMeta) error {
 		strategies.NewBuyListsHandler(meta, p.SettingsService, p.Tg, p.Factory.GetListService(p.config)),
 		strategies.NewListTokenHandler(meta, p.SettingsService, p.Tg, p.Factory.GetListService(p.config)),
 		strategies.NewListIdHandler(meta, p.SettingsService, p.Tg, p.Factory.GetListService(p.config)),
+		strategies.NewItemsHandler(meta, p.SettingsService, p.Tg, p.Factory.GetListService(p.config)),
 		strategies.NewDefaultHandler(meta, p.SettingsService, p.Tg),
 	}
 	for _, handler := range handlers {

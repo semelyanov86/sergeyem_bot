@@ -2,6 +2,7 @@ package tests
 
 import (
 	"bot/events/telegram/strategies"
+	"bot/lists"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strings"
 	"testing"
@@ -122,5 +123,52 @@ func TestGettingListsFromEasyList(t *testing.T) {
 	}
 	if !strings.Contains(processor.Tg.GetMessage(), "Borsch") {
 		t.Errorf("sent messages does not match. Expected that message %s contains %s", processor.Tg.GetMessage(), "Borsch")
+	}
+}
+
+func TestGettingItemsWithoutListThroghsError(t *testing.T) {
+	processor, down := NewTestProcessorWithDb(t)
+	defer down()
+	setting, err := GenerateTestUserWithTokens(processor)
+	processor.Factory.SetSettings(setting)
+	if err != nil {
+		t.Fatal("there was an error during creation of setting" + err.Error())
+	}
+
+	event := GenerateTestMessage("/" + strategies.ItemsCmd)
+	err = processor.Process(event)
+	if err == nil {
+		t.Error("There should be wrong list error, got null")
+	}
+
+	if processor.Tg.GetMessage() != strategies.MsgErrorWrongList {
+		t.Errorf("sent messages does not match. Expected that message %s equals %s", processor.Tg.GetMessage(), strategies.MsgErrorWrongList)
+	}
+}
+
+func TestGettingItemsFromSpecificList(t *testing.T) {
+	processor, down := NewTestProcessorWithDb(t)
+	defer down()
+	setting, err := GenerateTestUserWithTokens(processor)
+	processor.Factory.SetSettings(setting)
+	if err != nil {
+		t.Fatal("there was an error during creation of setting" + err.Error())
+	}
+
+	event := GenerateTestMessage("/" + strategies.ItemsCmd + " 3")
+	event.Meta.Message.Entities[0].Length = 6
+	err = processor.Process(event)
+	if err != nil {
+		t.Fatal("There was an error during process items from Easylist" + err.Error())
+	}
+
+	if !strings.Contains(processor.Tg.GetMessage(), lists.MsgItems) {
+		t.Errorf("sent messages does not match. Expected that message %s contains %s", processor.Tg.GetMessage(), lists.MsgItems)
+	}
+	if !strings.Contains(processor.Tg.GetMessage(), "<b>Kapusta</b> (1 st)") {
+		t.Errorf("sent messages does not match. Expected that message %s contains %s", processor.Tg.GetMessage(), "Kapusta (1 st)")
+	}
+	if !strings.Contains(processor.Tg.GetMessage(), "<b>Svekla</b> (2 st)") {
+		t.Errorf("sent messages does not match. Expected that message %s contains %s", processor.Tg.GetMessage(), "Svekla (2 st)")
 	}
 }

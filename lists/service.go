@@ -3,8 +3,11 @@ package lists
 import (
 	"bot/settings"
 	"context"
+	"strconv"
 	"time"
 )
+
+const MsgItems = "Товары из выбранного вами списка:"
 
 type ListService struct {
 	Repository RepositoryInterface
@@ -40,4 +43,21 @@ func (s ListService) GetItemsFromList(listId int) ([]Item, error) {
 	perPage := s.Config.ListsPerPage
 
 	return s.Repository.GetItemsFromList(ctx, listId, perPage)
+}
+
+func (s ListService) GenerateMessageFromItems(items []Item) string {
+	if len(items) < 1 {
+		return "Не найдено каких-либо элементов 🤔"
+	}
+	var text = "<i>" + MsgItems + "</i>\n"
+	var postFix = " "
+	for key, item := range items {
+		if item.Attributes.Quantity > 0 {
+			postFix = " (" + strconv.Itoa(item.Attributes.Quantity) + " " + item.Attributes.QuantityType + ")"
+		} else {
+			postFix = " "
+		}
+		text = text + strconv.Itoa(key+1) + ". <b>" + item.Attributes.Name + "</b>" + postFix + "\n" + item.Attributes.Description + "\n"
+	}
+	return text
 }
