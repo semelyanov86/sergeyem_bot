@@ -7,18 +7,19 @@ import (
 )
 
 type Config struct {
-	Port          int
-	Env           string
-	Db            *Database
-	AppName       string `yaml:"appName"`
-	LinksUrl      string `yaml:"linksUrl"`
-	LinksPerPage  int    `yaml:"linksPerPage"`
-	WordsUrl      string `yaml:"wordsUrl"`
-	WordsPerPage  int    `yaml:"wordsPerPage"`
-	WordsLanguage string `yaml:"wordsLanguage"`
-	ListsUrl      string `yaml:"listsUrl"`
-	ListsPerPage  int    `yaml:"listsPerPage"`
-	WebhookUrl    string `yaml:"webhookUrl"`
+	Port           int
+	Env            string
+	Db             *Database
+	AppName        string   `yaml:"appName"`
+	LinksUrl       string   `yaml:"linksUrl"`
+	LinksPerPage   int      `yaml:"linksPerPage"`
+	WordsUrl       string   `yaml:"wordsUrl"`
+	WordsPerPage   int      `yaml:"wordsPerPage"`
+	WordsLanguage  string   `yaml:"wordsLanguage"`
+	ListsUrl       string   `yaml:"listsUrl"`
+	ListsPerPage   int      `yaml:"listsPerPage"`
+	WebhookUrl     string   `yaml:"webhookUrl"`
+	TrustedOrigins []string `yaml:"trustedOrigins"`
 }
 
 type Database struct {

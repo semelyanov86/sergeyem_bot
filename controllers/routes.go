@@ -12,5 +12,5 @@ func Routes(cfg settings.Config, processor events.Processor) http.Handler {
 	handlers := NewHandlers(cfg, processor)
 	router.HandlerFunc(http.MethodPost, "/list", handlers.ReceiveListHandler)
 
-	return router
+	return handlers.EnableCORS(router)
 }
