@@ -11,6 +11,7 @@ type Fetcher interface {
 
 type Processor interface {
 	Process(e Event[TelegramMeta]) error
+	GetTgClient() Client
 }
 
 type Client interface {

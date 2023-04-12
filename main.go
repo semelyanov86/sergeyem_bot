@@ -38,7 +38,7 @@ func main() {
 
 	log.Println("service started")
 
-	consumer := event_consumer.New(eventsProcessor, eventsProcessor, BatchSize)
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, BatchSize, cfg)
 
 	if err := consumer.Start(cfg.WebhookUrl, cfg.Port); err != nil {
 		log.Fatal("service is stopped", err)

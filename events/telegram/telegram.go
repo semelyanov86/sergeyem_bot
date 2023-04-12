@@ -92,6 +92,10 @@ func (p *Processor) Process(event events.Event[events.TelegramMeta]) error {
 	}
 }
 
+func (p *Processor) GetTgClient() events.Client {
+	return p.Tg
+}
+
 func (p *Processor) processMessage(event2 events.Event[events.TelegramMeta]) error {
 	meta := event2.Meta
 	if meta.Username == "" {

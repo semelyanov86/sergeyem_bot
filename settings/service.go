@@ -19,6 +19,10 @@ type Service struct {
 }
 
 func (s *Service) New(db *sql.DB) Service {
+	return NewSettingsService(db)
+}
+
+func NewSettingsService(db *sql.DB) Service {
 	return Service{
 		Repository: &Repository{DB: db},
 	}
@@ -26,6 +30,17 @@ func (s *Service) New(db *sql.DB) Service {
 
 func (s *Service) GetByUserName(userName string) (*Setting, error) {
 	setting, err := s.Repository.Get(userName)
+	if errors.Is(ErrNoRecord, err) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, e.Wrap("failed to get settings", err)
+	}
+	return setting, nil
+}
+
+func (s *Service) GetByEasyListId(userId int64) (*Setting, error) {
+	setting, err := s.Repository.GetByEasyListId(userId)
 	if errors.Is(ErrNoRecord, err) {
 		return nil, nil
 	}

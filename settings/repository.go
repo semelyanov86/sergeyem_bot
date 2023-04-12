@@ -28,6 +28,25 @@ func (r *Repository) Get(user string) (*Setting, error) {
 	return s, nil
 }
 
+func (r *Repository) GetByEasyListId(listId int64) (*Setting, error) {
+	stmt := `SELECT id, username, chat_id, linkace_token, easylist_token, easywords_token, mode, context, easylist_id FROM settings
+    WHERE easylist_id = ?`
+
+	row := r.DB.QueryRow(stmt, listId)
+
+	s := &Setting{}
+	err := row.Scan(&s.ID, &s.Username, &s.ChatId, &s.LinkaceToken, &s.EasylistToken, &s.EasywordsToken, &s.Mode, &s.Context, &s.EasylistId)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return s, nil
+}
+
 func (r *Repository) Insert(setting *Setting) error {
 	stmt := `INSERT INTO settings (username, chat_id, linkace_token, easylist_token, easywords_token, mode, context, easylist_id)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?)`

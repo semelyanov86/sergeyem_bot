@@ -1,7 +1,9 @@
 package event_consumer
 
 import (
+	"bot/controllers"
 	"bot/events"
+	"bot/settings"
 	"context"
 	"errors"
 	"fmt"
@@ -18,13 +20,15 @@ type Consumer struct {
 	fetcher   events.Fetcher
 	processor events.Processor
 	batchSize int
+	cfg       settings.Config
 }
 
-func New(fetcher events.Fetcher, processor events.Processor, batchSize int) Consumer {
+func New(fetcher events.Fetcher, processor events.Processor, batchSize int, cfg settings.Config) Consumer {
 	return Consumer{
 		fetcher:   fetcher,
 		processor: processor,
 		batchSize: batchSize,
+		cfg:       cfg,
 	}
 }
 
@@ -35,7 +39,7 @@ func (c *Consumer) Start(url string, port int) error {
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      nil,
+		Handler:      controllers.Routes(c.cfg, c.processor),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
