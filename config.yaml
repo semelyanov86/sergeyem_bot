@@ -9,7 +9,7 @@ wordsLanguage: "DE"
 listsUrl: "https://easylist.sergeyem.ru"
 listsPerPage: 100
 webhookUrl: "https://185.135.137.48:443/"
-trustedOrigins: ["127.0.0.1", "http://localhost", "http://localhost:3000", "192.168.0.74", "192.168.0.74:3000"]
+trustedOrigins: ["127.0.0.1", "http://localhost", "http://localhost:3000", "192.168.0.74", "192.168.0.74:3000", "https://sergeyem.ru", "https://calendar.sergeyem.ru"]
 db:
   host: ""
   login: "newroot"
