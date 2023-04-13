@@ -21,7 +21,7 @@ confirm:
 ## run: run the application
 .PHONY: run
 run:
-	go run
+	go run bot
 
 ## db: connect to the database using mysql
 .PHONY: db
@@ -75,7 +75,7 @@ linker_flags = '-s -X main.buildTime=${current_time} -X main.version=${git_descr
 ## build: build the cmd/api application
 .PHONY: build
 build:
-	@echo 'Building cmd/api...'
+	@echo 'Building bot...'
 	go build -ldflags=${linker_flags} -o=./bin/bot bot
 	GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flags} -o=./bin/linux_amd64/bot bot
 
@@ -90,9 +90,9 @@ production_host_ip = "serv.sergeyem.ru"
 production/connect:
 	ssh easylist@${production_host_ip}
 
-## production/deploy/api: deploy the api to production
-.PHONY: production/deploy/api
-production/deploy/api:
+## production/deploy/bot: deploy the api to production
+.PHONY: production/deploy/bot
+production/deploy/bot:
 	rsync -P ./bin/linux_amd64/bot easylist@${production_host_ip}:~/bot
 	rsync -rP --delete ./migrations easylist@${production_host_ip}:~
 	rsync -P ./remote/production/bot.service easylist@${production_host_ip}:~
