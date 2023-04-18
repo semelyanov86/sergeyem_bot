@@ -93,13 +93,18 @@ func (c *Consumer) Start(url string, port int) error {
 		})
 	}()
 	if url != "" {
-		gotEvents, err := c.fetcher.ListenWebhooks(url)
-		if err != nil {
-			log.Printf("[ERR] consumer: %s", err.Error())
-		}
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			gotEvents, err := c.fetcher.ListenWebhooks(url)
+			if err != nil {
+				log.Printf("[ERR] consumer: %s", err.Error())
+			}
 
-		if err := c.handleEvents(gotEvents); err != nil {
-			log.Println(err)
+			if err := c.handleEvents(gotEvents); err != nil {
+				log.Println(err)
+			}
 		}
 	} else {
 		for {
